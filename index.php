@@ -1,3 +1,6 @@
+<?php
+  session_start();
+  require("database.php");
 <!DOCTYPE html>
 <html>
   <head>
