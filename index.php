@@ -8,7 +8,7 @@
       <?php include ("header.php"); ?>
 
       <main>
-        <h2>Student List</h2>
+        <h2>Students List</h2>
       </main> 
 
       <?php include ("footer.php"); ?>
