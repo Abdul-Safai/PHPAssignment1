@@ -1,6 +1,14 @@
 <?php
   session_start();
   require("database.php");
+  $queryStudents = 'SELECT * FROM students';
+  $statement1 = $db->prepare($queryStudents);
+  $statement1->execute();
+  $students = $statement1->fetchALl();
+
+  $statement1->closeCursor();
+
+  ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -24,6 +32,17 @@
                 <th>Program</th>
               
             </tr>
+            <?php foreach ($students as $student): ?>
+              <tr>  
+                <td><?php echo $student['firstName']; ?></td>
+                <td><?php echo $student['lastName']; ?></td>
+                <td><?php echo $student['email']; ?></td>
+                <td><?php echo $student['phoneNumber']; ?></td>
+                <td><?php echo $student['program']; ?></td>
+
+            </tr>
+
+            <?php endforeach; ?>
         </table>
       </main> 
 
