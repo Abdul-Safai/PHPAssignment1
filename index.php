@@ -9,6 +9,18 @@
 
       <main>
         <h2>Students List</h2>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Program</th>
+              
+            </tr>
+        </table>
       </main> 
 
       <?php include ("footer.php"); ?>
