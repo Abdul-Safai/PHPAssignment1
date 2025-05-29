@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <title> Student Directory - Confirmation</title>
+      <title> Student Directory - Error</title>
       <link rel="stylesheet" type="text/css" href="css/main.css" />
  
   </head>
@@ -12,12 +12,12 @@
       <?php include ("header.php"); ?>
 
       <main>
-        <h2>Students Confirmation</h2>
+        <h2>Error</h2>
         <p>
-            Thank you, <?php echo $_SESSION["fullName"]; ?> Your student details have been successfully saved.
-        </p>
-
-        <p><a href="index.php">Back to Home</a></p>
+        <?php echo $_SESSION["add_error"]; ?>
+        </p> 
+        <p><a href="add_student_form.php">Add Student</a></p>
+        <p><a href="index.php">View Students List</a></p>
       </main> 
 
       <?php include ("footer.php"); ?>
