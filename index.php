@@ -34,6 +34,7 @@
             </tr>
             <?php foreach ($students as $student): ?>
               <tr>  
+                <td><?php echo $student['ID']; ?></td>
                 <td><?php echo $student['firstName']; ?></td>
                 <td><?php echo $student['lastName']; ?></td>
                 <td><?php echo $student['email']; ?></td>
@@ -44,6 +45,7 @@
 
             <?php endforeach; ?>
         </table>
+        <p><a href="add_student_form.php">Add Student</a></p>
       </main> 
 
       <?php include ("footer.php"); ?>
