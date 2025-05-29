@@ -36,7 +36,7 @@
             
             <div id="buttons">
                 
-                <label>$nbsp;</label>
+                <label>&nbsp;</label>
                 <input type="submit" value="Save Student" /><br />
             
             </div>
