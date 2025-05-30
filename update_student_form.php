@@ -34,7 +34,7 @@
             <div id="data">
 
                 <input type="hidden" name= "student_id"
-                value="<?php $student['ID']; ?>" />
+                value="<?php echo $student['ID']; ?>" />
                 
                 <label>First Name:</label>
                 <input type="text" name="first_name" 

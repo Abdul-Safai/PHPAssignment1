@@ -16,7 +16,7 @@ require_once('database.php');
  $queryStudents = 'SELECT * FROM students';
   $statement1 = $db->prepare($queryStudents);
   $statement1->execute();
-  $students = $statement1->fetchALl();
+  $students = $statement1->fetchAll();
 
   $statement1->closeCursor();
 
@@ -42,7 +42,6 @@ require_once('database.php');
      else
     {
 
-            require_once('database.php');
 
             //Update the student to the database
 
@@ -52,10 +51,10 @@ require_once('database.php');
                email = :email,
                phoneNumber = :phoneNumber,
                program = :program
-               WHERE ID = : ID';
+               WHERE ID = :student_id';
 
             $statement = $db->prepare($query);
-            $statement->bindValue(':ID', $student_id);
+            $statement->bindValue(':student_id', $student_id);
             $statement->bindValue(':firstName', $first_name);
             $statement->bindValue(':lastName', $last_name);
             $statement->bindValue(':email', $email);
