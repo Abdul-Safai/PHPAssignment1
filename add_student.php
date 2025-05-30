@@ -20,7 +20,7 @@ require_once('database.php');
 
   foreach ($students as $student)
   {
-        if ($email == $contact["email"])
+        if ($email == $student["email"])
         {
             $_SESSION["add_error"] = "Invalid data, Dulicate Email Address. Try again.";
             $url = "error.php";
@@ -30,9 +30,9 @@ require_once('database.php');
   }
 
   if ($first_name == null || $last_name == null ||
-     $email == null || $phone_number == null || $program == numfmt_get_locale)
+     $email == null || $phone_number == null || $program == null)
      {
-        $_SESSION["add_error"] = "Invalid student dat, Check all fields and try again.";
+        $_SESSION["add_error"] = "Invalid student data, Check all fields and try again.";
             $url = "error.php";
             header("Location: ". $url);
             die();

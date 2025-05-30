@@ -30,6 +30,8 @@
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Program</th>
+                <th>&nbsp;</th> <!--for edit button-->
+                 <th>&nbsp;</th> <!--for delete button-->
               
             </tr>
             <?php foreach ($students as $student): ?>
@@ -40,6 +42,22 @@
                 <td><?php echo $student['email']; ?></td>
                 <td><?php echo $student['phoneNumber']; ?></td>
                 <td><?php echo $student['program']; ?></td>
+                <td>
+                    <form action="update_student_form.php" method="post">
+                        <input type="hidden" name="student_id"
+                            value="<?php echo $student['ID']; ?>" />
+                        <input type="submit" value="Update" />
+                    </form>
+
+                </td> <!-- for edit button -->
+                <td>
+                    <form action="delete_student.php" method="post">
+                        <input type="hidden" name="student_id"
+                            value="<?php echo $student['ID']; ?>" />
+                        <input type="submit" value="Delete" />
+                    </form>
+
+                </td> <!-- for delete button -->
 
             </tr>
 
