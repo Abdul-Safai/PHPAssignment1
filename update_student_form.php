@@ -10,7 +10,7 @@
             $statement->bindValue(':student_id', $student_id);
         
             $statement->execute();
-            $student = $statement->fetch():
+            $student = $statement->fetch();
             $statement->closeCursor(); 
 
 
