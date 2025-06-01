@@ -30,6 +30,7 @@
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Program</th>
+                <th>Photo</th>
                 <th>&nbsp;</th> <!--for edit button-->
                  <th>&nbsp;</th> <!--for delete button-->
               
@@ -42,6 +43,7 @@
                 <td><?php echo $student['email']; ?></td>
                 <td><?php echo $student['phoneNumber']; ?></td>
                 <td><?php echo $student['program']; ?></td>
+                <td><img src="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>" alt="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>" style="width:100px; height:auto;" /></td>
                 <td>
                     <form action="update_student_form.php" method="post">
                         <input type="hidden" name="student_id"

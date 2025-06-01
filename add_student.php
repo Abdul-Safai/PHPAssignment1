@@ -1,6 +1,27 @@
 <?php
 session_start();
 
+require_once 'image_util.php'; //the process_image function
+
+$image_dir = 'images';
+$image_dir_path = getcwd() . DIRECTORY_SEPARATOR . $image_dir;
+
+if (isset($_FILES['file1']))
+{
+    $filename = $_FILES['file1']['name'];
+
+    if (!empty($filename))
+    {
+        $source = $_FILES['files1']['tmp_name'];
+
+        $target = $image_dir_path . DIRECTORY_SEPARATOR . $filename;
+
+        move_uploaded_file($source, $target);
+
+        //create the '400' and '100' versions of the image
+        process_image($image_dir_path, $filename);
+    }
+}
 //get data from the form
 $first_name = filter_input(INPUT_POST, 'first_name');
 //altrnative
@@ -9,6 +30,7 @@ $last_name = filter_input(INPUT_POST, 'last_name');
 $email = filter_input(INPUT_POST, 'email');
 $phone_number = filter_input(INPUT_POST, 'phone_number');
 $program = filter_input(INPUT_POST, 'program');
+$image_name = $_FILES['file']['name'];
 
 require_once('database.php');
  $queryStudents = 'SELECT * FROM students';
@@ -45,15 +67,16 @@ require_once('database.php');
             //Add the contact to the database
 
             $query = 'INSERT INTO students
-                (firstName, lastName, email, phoneNumber, program)
+                (firstName, lastName, email, phoneNumber, program, imageName)
                 VALUES
-                (:firstName, :lastName, :email, :phoneNumber, :program)';
+                (:firstName, :lastName, :email, :phoneNumber, :program, :imageName)';
             $statement = $db->prepare($query);
             $statement->bindValue(':firstName', $first_name);
             $statement->bindValue(':lastName', $last_name);
             $statement->bindValue(':email', $email);
             $statement->bindValue(':phoneNumber', $phone_number);
             $statement->bindValue(':program', $program);
+            $statement->bindValue(':imageName', $image_name);
 
             $statement->execute();
             $statement->closeCursor(); 

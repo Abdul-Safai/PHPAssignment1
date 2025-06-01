@@ -32,6 +32,9 @@
                 <label>Program:</label>
                 <input type="text" name="program" /><br />
 
+                <label>Upload Image:</label>
+                <input type="file" name="file1" /><br />
+
             </div>
             
             <div id="buttons">
