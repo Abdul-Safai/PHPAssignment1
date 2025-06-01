@@ -12,7 +12,7 @@ if (isset($_FILES['file1']))
 
     if (!empty($filename))
     {
-        $source = $_FILES['files1']['tmp_name'];
+        $source = $_FILES['file1']['tmp_name'];
 
         $target = $image_dir_path . DIRECTORY_SEPARATOR . $filename;
 
@@ -30,7 +30,7 @@ $last_name = filter_input(INPUT_POST, 'last_name');
 $email = filter_input(INPUT_POST, 'email');
 $phone_number = filter_input(INPUT_POST, 'phone_number');
 $program = filter_input(INPUT_POST, 'program');
-$image_name = $_FILES['file']['name'];
+$image_name = $_FILES['file1']['name'];
 
 require_once('database.php');
  $queryStudents = 'SELECT * FROM students';
