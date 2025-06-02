@@ -43,7 +43,7 @@
                 <td><?php echo $student['email']; ?></td>
                 <td><?php echo $student['phoneNumber']; ?></td>
                 <td><?php echo $student['program']; ?></td>
-                <td><img src="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>" alt="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>" style="width:auto; height:80px;" /></td>
+                <td><img src="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>" alt="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>" /></td>
                 <td>
                     <form action="update_student_form.php" method="post">
                         <input type="hidden" name="student_id"
@@ -66,6 +66,7 @@
             <?php endforeach; ?>
         </table>
         <p><a href="add_student_form.php">Add Student</a></p>
+        <p><a href="logout.php">Logout</a></p>
       </main> 
 
       <?php include ("footer.php"); ?>

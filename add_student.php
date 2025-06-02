@@ -30,7 +30,16 @@ $last_name = filter_input(INPUT_POST, 'last_name');
 $email = filter_input(INPUT_POST, 'email');
 $phone_number = filter_input(INPUT_POST, 'phone_number');
 $program = filter_input(INPUT_POST, 'program');
-$image_name = $_FILES['file1']['name'];
+
+$file_name = $_FILES['file1']['name'];
+
+// Adjust the filename
+   
+$i = strrpos($filename, '.');
+$image_name = substr($filename, 0, $i);
+$ext = substr($filename, $i);
+
+$image_name_100 =  $image_name . '_100' . $ext;
 
 require_once('database.php');
  $queryStudents = 'SELECT * FROM students';
@@ -76,7 +85,7 @@ require_once('database.php');
             $statement->bindValue(':email', $email);
             $statement->bindValue(':phoneNumber', $phone_number);
             $statement->bindValue(':program', $program);
-            $statement->bindValue(':imageName', $image_name);
+            $statement->bindValue(':imageName', $image_name_100);
 
             $statement->execute();
             $statement->closeCursor(); 
