@@ -1,26 +1,32 @@
 <?php
-  session_start();
-  require("database.php");
-  $queryStudents = 'SELECT * FROM students';
-  $statement1 = $db->prepare($queryStudents);
-  $statement1->execute();
-  $students = $statement1->fetchALl();
+session_start();
 
-  $statement1->closeCursor();
+if (!isset($_SESSION["isLoggedIn"])) 
+{
+    $url = "login_form.php";
+    header("Location: " . $url);
+    die();
+}
 
-  ?>
+require_once("database.php");
+
+$queryStudents = 'SELECT * FROM students';
+$statement1 = $db->prepare($queryStudents);
+$statement1->execute();
+$students = $statement1->fetchAll();
+$statement1->closeCursor();
+?>
 <!DOCTYPE html>
 <html>
   <head>
-      <title> Student Directory - Home</title>
+      <title>Student Directory - Home</title>
       <link rel="stylesheet" type="text/css" href="css/main.css" />
- 
   </head>
   <body>
-      <?php include ("header.php"); ?>
+      <?php include("header.php"); ?>
 
       <main>
-        <h2>Students List</h2>
+        <h2>Student List</h2>
 
         <table>
             <tr>
@@ -31,44 +37,44 @@
                 <th>Phone Number</th>
                 <th>Program</th>
                 <th>Photo</th>
-                <th>&nbsp;</th> <!--for edit button-->
-                 <th>&nbsp;</th> <!--for delete button-->
-              
+                <th>&nbsp;</th> <!-- for edit button -->
+                <th>&nbsp;</th> <!-- for delete button -->
             </tr>
+
             <?php foreach ($students as $student): ?>
-              <tr>  
+              <tr>
                 <td><?php echo $student['ID']; ?></td>
                 <td><?php echo $student['firstName']; ?></td>
                 <td><?php echo $student['lastName']; ?></td>
                 <td><?php echo $student['email']; ?></td>
                 <td><?php echo $student['phoneNumber']; ?></td>
                 <td><?php echo $student['program']; ?></td>
-                <td><img src="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>" alt="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>" /></td>
+                <td>
+                  <img src="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>"
+                       alt="Student Photo" />
+                </td>
                 <td>
                     <form action="update_student_form.php" method="post">
                         <input type="hidden" name="student_id"
-                            value="<?php echo $student['ID']; ?>" />
+                               value="<?php echo $student['ID']; ?>" />
                         <input type="submit" value="Update" />
                     </form>
-
-                </td> <!-- for edit button -->
+                </td>
                 <td>
                     <form action="delete_student.php" method="post">
                         <input type="hidden" name="student_id"
-                            value="<?php echo $student['ID']; ?>" />
+                               value="<?php echo $student['ID']; ?>" />
                         <input type="submit" value="Delete" />
                     </form>
-
-                </td> <!-- for delete button -->
-
-            </tr>
-
+                </td>
+              </tr>
             <?php endforeach; ?>
         </table>
+
         <p><a href="add_student_form.php">Add Student</a></p>
         <p><a href="logout.php">Logout</a></p>
-      </main> 
+      </main>
 
-      <?php include ("footer.php"); ?>
+      <?php include("footer.php"); ?>
   </body>
 </html>

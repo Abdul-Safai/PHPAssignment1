@@ -1,16 +1,19 @@
+<?php
+    require_once("database.php");
+?>
 <!DOCTYPE html>
 <html>
   <head>
-      <title>Student Directory - Login</title>
+      <title>Student Directory - Register</title>
       <link rel="stylesheet" type="text/css" href="css/main.css" />
   </head>
   <body>
       <?php include("header.php"); ?>
 
       <main>
-        <h2>Login</h2>
+        <h2>Register</h2>
 
-        <form action="login.php" method="post" id="login_form" enctype="multipart/form-data">
+        <form action="register_student.php" method="post" id="register_student_form">
             <div id="data">
                 <label>Username:</label>
                 <input type="text" name="user_name" /><br />
@@ -18,16 +21,15 @@
                 <label>Password:</label>
                 <input type="password" name="password" /><br />
             </div>
-
+            
             <div id="buttons">
+
                 <label>&nbsp;</label>
-                <input type="submit" value="Login" /><br />
+                <input type="submit" value="Register" /><br />
             </div>
+            
         </form>
-
-        <p><a href="register_student_form.php">Register</a></p>
-
-      </main>
+      </main> 
 
       <?php include("footer.php"); ?>
   </body>
