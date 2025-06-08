@@ -1,5 +1,5 @@
 <?php
-    session_start();
+
     $dsn = 'mysql:host=localhost;dbname=student_directory';
     $username = 'root';
     $password = '';
