@@ -3,11 +3,11 @@ body {
 }
 main {
     display: block;
-    width: 850px;
+    width: 65%;
     margin: 0 auto;
     padding: 1em;
     background: #ffff;
-    border: 2px solid rgb(0, 0, 128);
+    border: 3px solid rgb(0, 0, 128);
 }
 
 h1 {
@@ -44,4 +44,34 @@ br {
 
 h2 {
     text-align: center;
+}
+
+th, td {
+    padding: 5px 14px;
+}
+
+/*  table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+th, td {
+    border: 1.5px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #ffff;
+    color: #000;
+}
+
+tr:nth-child(even) {
+    background-color: #ffff;
+}
+
+tr:hover {
+    background-color: #ddd;
 }
