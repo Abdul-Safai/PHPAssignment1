@@ -1,34 +1,41 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <title>Student Directory - Login</title>
-      <link rel="stylesheet" type="text/css" href="css/main.css" />
-  </head>
-  <body>
-      <?php include("header.php"); ?>
+    <head>
+        <title>Students Directory - Login</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+    </head>
+    <body>
+        <?php include("header.php"); ?>
 
-      <main>
-        <h2>Login</h2>
+        <main>
+            <h2>Login</h2>
 
-        <form action="login.php" method="post" id="login_form" enctype="multipart/form-data">
-            <div id="data">
-                <label>Username:</label>
-                <input type="text" name="user_name" /><br />
+            <form action="login.php" method="post" id="login_form"
+                enctype="multipart/form-data">
 
-                <label>Password:</label>
-                <input type="password" name="password" /><br />
-            </div>
+                <div id="data">
 
-            <div id="buttons">
-                <label>&nbsp;</label>
-                <input type="submit" value="Login" /><br />
-            </div>
-        </form>
+                    <label>Username:</label>
+                    <input type="text" name="user_name" /><br />
 
-        <p><a href="register_student_form.php">Register</a></p>
+                    <label>Password:</label>
+                    <input type="password" name="password" /><br />                    
 
-      </main>
+                </div>
 
-      <?php include("footer.php"); ?>
-  </body>
+                <div id="buttons">
+
+                    <label>&nbsp;</label>
+                    <input type="submit" value="Login" /><br />
+
+                </div>
+
+            </form>
+
+            <p><a href="register_student_form.php">Register</a></p>
+            
+        </main>
+
+        <?php include("footer.php"); ?>
+    </body>
 </html>

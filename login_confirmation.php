@@ -1,10 +1,11 @@
+
 <?php
     session_start();    
 ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Student Directory - Login Confirmation</title>
+        <title>Students Directory - Login Confirmation</title>
         <link rel="stylesheet" type="text/css" href="css/main.css" />
     </head>
     <body>
@@ -17,7 +18,7 @@
                 logging in. 
             </p>
 
-            <p>You are logged in and may proceed to the students list by clicking below.</p>
+            <p>You are logged in and may proceed to the student list by clicking below.</p>
             
             <p><a href="index.php">Students List</a></p>
         </main>

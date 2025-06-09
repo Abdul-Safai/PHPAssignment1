@@ -1,16 +1,17 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["isLoggedIn"])) 
-{
-    $url = "login_form.php";
-    header("Location: " . $url);
+if (!isset($_SESSION["isLoggedIn"])) {
+    header("Location: login_form.php");
     die();
 }
 
 require_once("database.php");
 
-$queryStudents = 'SELECT * FROM students';
+// Updated SQL query to join students with types
+$queryStudents = 'SELECT students.*, types.studentType
+                  FROM students
+                  JOIN types ON students.typeID = types.typeID';
 $statement1 = $db->prepare($queryStudents);
 $statement1->execute();
 $students = $statement1->fetchAll();
@@ -36,9 +37,10 @@ $statement1->closeCursor();
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Program</th>
+                <th>Type</th> <!-- New column for student type -->
                 <th>Photo</th>
-                <th>&nbsp;</th> <!-- for edit button -->
-                <th>&nbsp;</th> <!-- for delete button -->
+                <th>&nbsp;</th> <!-- Update -->
+                <th>&nbsp;</th> <!-- Delete -->
             </tr>
 
             <?php foreach ($students as $student): ?>
@@ -49,21 +51,20 @@ $statement1->closeCursor();
                 <td><?php echo $student['email']; ?></td>
                 <td><?php echo $student['phoneNumber']; ?></td>
                 <td><?php echo $student['program']; ?></td>
+                <td><?php echo $student['studentType']; ?></td> <!-- Student Type -->
                 <td>
                   <img src="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>"
                        alt="Student Photo" />
                 </td>
                 <td>
                     <form action="update_student_form.php" method="post">
-                        <input type="hidden" name="student_id"
-                               value="<?php echo $student['ID']; ?>" />
+                        <input type="hidden" name="student_id" value="<?php echo $student['ID']; ?>" />
                         <input type="submit" value="Update" />
                     </form>
                 </td>
                 <td>
                     <form action="delete_student.php" method="post">
-                        <input type="hidden" name="student_id"
-                               value="<?php echo $student['ID']; ?>" />
+                        <input type="hidden" name="student_id" value="<?php echo $student['ID']; ?>" />
                         <input type="submit" value="Delete" />
                     </form>
                 </td>
