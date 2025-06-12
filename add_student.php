@@ -37,10 +37,11 @@ if ($emailCount > 0) {
     exit();
 }
 
-// Handle image upload
+// Handle image upload or use placeholder
+$base_dir = 'images/';
 $image_name = null;
+
 if ($image && $image['error'] === UPLOAD_ERR_OK) {
-    $base_dir = 'images/';
     $original_filename = basename($image['name']);
     $upload_path = $base_dir . $original_filename;
     move_uploaded_file($image['tmp_name'], $upload_path);
@@ -50,6 +51,18 @@ if ($image && $image['error'] === UPLOAD_ERR_OK) {
     $name_without_ext = substr($original_filename, 0, $dot_position);
     $extension = substr($original_filename, $dot_position);
     $image_name = $name_without_ext . '_100' . $extension;
+} else {
+    // Use placeholder image
+    $placeholder = 'placeholder.png';
+    $placeholder_100 = 'placeholder_100.png';
+    $placeholder_400 = 'placeholder_400.png';
+
+    // If resized versions don't exist, generate them
+    if (!file_exists($base_dir . $placeholder_100) || !file_exists($base_dir . $placeholder_400)) {
+        process_image($base_dir, $placeholder);
+    }
+
+    $image_name = $placeholder_100;
 }
 
 // INSERT the new student
