@@ -83,6 +83,7 @@ if (!file_exists($base_dir . 'placeholder_100.png') || !file_exists($base_dir . 
     }
     process_image($base_dir, 'placeholder.png');
 }
+//tt
 
 // Insert into DB
 $insert_sql = 'INSERT INTO students (firstName, lastName, email, phoneNumber, program, typeID, imageName)
