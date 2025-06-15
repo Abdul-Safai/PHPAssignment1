@@ -9,7 +9,6 @@ $phone_number = filter_input(INPUT_POST, 'phone_number');
 $program = filter_input(INPUT_POST, 'program');
 $type_id = filter_input(INPUT_POST, 'type_id', FILTER_VALIDATE_INT);
 
-// Correctly get uploaded image from $_FILES['image']
 $image = isset($_FILES['image']);
 
 require_once('database.php');
@@ -21,7 +20,7 @@ $base_dir = 'images/';
 $queryStudents = 'SELECT * FROM students';
 $statement1 = $db->prepare($queryStudents);
 $statement1->execute();
-$contacts = $statement1->fetchAll();
+$students = $statement1->fetchAll();
 $statement1->closeCursor();
 
 foreach ($students as $student) {
