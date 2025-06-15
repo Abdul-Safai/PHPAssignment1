@@ -39,7 +39,7 @@ $statement->closeCursor();
             <input type="text" name="program" required /><br />
 
             <label>Upload Image:</label>
-            <input type="file" name="file1" /><br />
+            <input type="file" name="image" /><br />
 
             <label>Type:</label>
             <select name="type_id" required>

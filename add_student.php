@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-// Get form data
+
+// Get inputs
 $first_name = filter_input(INPUT_POST, 'first_name');
 $last_name = filter_input(INPUT_POST, 'last_name');
 $email = filter_input(INPUT_POST, 'email');
@@ -9,81 +10,94 @@ $phone_number = filter_input(INPUT_POST, 'phone_number');
 $program = filter_input(INPUT_POST, 'program');
 $type_id = filter_input(INPUT_POST, 'type_id', FILTER_VALIDATE_INT);
 
-$image = isset($_FILES['image']);
-
 require_once('database.php');
 require_once('image_util.php');
 
 $base_dir = 'images/';
 
-// Check for duplicate email
-$queryStudents = 'SELECT * FROM students';
-$statement1 = $db->prepare($queryStudents);
-$statement1->execute();
-$students = $statement1->fetchAll();
-$statement1->closeCursor();
-
-foreach ($students as $student) {
-    if ($email === $student["email"]) {
-        $_SESSION["add_error"] = "Invalid data, Duplicate Email Address. Try again.";
-        header("Location: error.php");
-        die();
-    }
+// Basic validation
+if (!$first_name || !$last_name || !$email || !$phone_number || !$program || !$type_id) {
+    error_redirect("Please fill all required fields.");
 }
 
-// Validate input
-if ($first_name == null || $last_name == null || $email == null ||
-    $phone_number == null || $program == null || $type_id == null) {
-    $_SESSION["add_error"] = "Invalid student data, Check all fields and try again.";
-    header("Location: error.php");
-    exit();
+// Check duplicate email
+$query = 'SELECT COUNT(*) FROM students WHERE email = :email';
+$stmt = $db->prepare($query);
+$stmt->bindValue(':email', $email);
+$stmt->execute();
+$count = $stmt->fetchColumn();
+$stmt->closeCursor();
+
+if ($count > 0) {
+    error_redirect("Duplicate email address. Try a different one.");
 }
 
-$image_name = '';  // default empty
+// Default image name (placeholder)
+$image_name = 'placeholder_100.png';
 
-// Handle image upload
-if ($image && $image['error'] === UPLOAD_ERR_OK) {
-    $original_filename = basename($image['name']);
-    $upload_path = $base_dir . $original_filename;
+// Handle file upload and debug
+if (isset($_FILES['image'])) {
+    $fileError = $_FILES['image']['error'];
+    if ($fileError === UPLOAD_ERR_OK) {
+        $tmp_name = $_FILES['image']['tmp_name'];
+        $original_name = basename($_FILES['image']['name']);
 
-    if (move_uploaded_file($image['tmp_name'], $upload_path)) {
-        process_image($base_dir, $original_filename);
+        // Check upload folder writable
+        if (!is_writable($base_dir)) {
+            error_redirect("Upload directory not writable.");
+        }
 
-        $dot_pos = strrpos($original_filename, '.');
-        $new_image_name = substr($original_filename, 0, $dot_pos) . '_100' . substr($original_filename, $dot_pos);
-        $image_name = $name_100;
+        // Clean filename and add timestamp to avoid overwrite
+        $safe_name = time() . '_' . preg_replace("/[^a-zA-Z0-9._-]/", "", $original_name);
+        $upload_path = $base_dir . $safe_name;
+
+        if (move_uploaded_file($tmp_name, $upload_path)) {
+            // Call process_image function
+            process_image($base_dir, $safe_name);
+
+            // Use thumbnail for DB
+            $dot_pos = strrpos($safe_name, '.');
+            $thumb_name = substr($safe_name, 0, $dot_pos) . '_100' . substr($safe_name, $dot_pos);
+
+            // Check if thumbnail was created
+            if (file_exists($base_dir . $thumb_name)) {
+                $image_name = $thumb_name;
+            } else {
+                error_redirect("Thumbnail image was not created.");
+            }
+        } else {
+            error_redirect("Failed to move uploaded file.");
+        }
+    } elseif ($fileError !== UPLOAD_ERR_NO_FILE) {
+        // If any error other than no file selected
+        error_redirect("Upload error code: $fileError");
     }
 } else {
-    // Use placeholder if no image uploaded
-    $placeholder = 'placeholder.png';
-    $placeholder_100 = 'placeholder_100.png';
-    $placeholder_400 = 'placeholder_400.png';
-
-    if (!file_exists($base_dir . $placeholder_100) || !file_exists($base_dir . $placeholder_400)) {
-        process_image($base_dir, $placeholder);
-    }
-
-    $image_name = $placeholder_100;
+    // No file uploaded, will use placeholder
 }
 
-// Insert student into database
-$query = 'INSERT INTO students
-        (firstName, lastName, email, phoneNumber, program, typeID, imageName)
-    VALUES
-        (:firstName, :lastName, :email, :phoneNumber, :program, :typeID, :imageName)';
+// Check placeholder images, create if missing
+if (!file_exists($base_dir . 'placeholder_100.png') || !file_exists($base_dir . 'placeholder_400.png')) {
+    if (!file_exists($base_dir . 'placeholder.png')) {
+        error_redirect("Placeholder image missing.");
+    }
+    process_image($base_dir, 'placeholder.png');
+}
 
-$statement = $db->prepare($query);
-$statement->bindValue(':firstName', $first_name);
-$statement->bindValue(':lastName', $last_name);
-$statement->bindValue(':email', $email);
-$statement->bindValue(':phoneNumber', $phone_number);
-$statement->bindValue(':program', $program);
-$statement->bindValue(':typeID', $type_id);
-$statement->bindValue(':imageName', $image_name);
-$statement->execute();
-$statement->closeCursor();
+// Insert into DB
+$insert_sql = 'INSERT INTO students (firstName, lastName, email, phoneNumber, program, typeID, imageName)
+               VALUES (:firstName, :lastName, :email, :phoneNumber, :program, :typeID, :imageName)';
+$insert_stmt = $db->prepare($insert_sql);
+$insert_stmt->bindValue(':firstName', $first_name);
+$insert_stmt->bindValue(':lastName', $last_name);
+$insert_stmt->bindValue(':email', $email);
+$insert_stmt->bindValue(':phoneNumber', $phone_number);
+$insert_stmt->bindValue(':program', $program);
+$insert_stmt->bindValue(':typeID', $type_id);
+$insert_stmt->bindValue(':imageName', $image_name);
+$insert_stmt->execute();
+$insert_stmt->closeCursor();
 
 $_SESSION["fullName"] = $first_name . " " . $last_name;
 header("Location: confirmation.php");
 exit();
-?>
