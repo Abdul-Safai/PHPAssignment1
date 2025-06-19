@@ -3,9 +3,15 @@ session_start();
 
 require_once('database.php');
 
-// Trim input
+// Trim and normalize input
 $user_name = trim(filter_input(INPUT_POST, 'user_name'));
 $password = trim(filter_input(INPUT_POST, 'password'));
+
+if (!$user_name || !$password) {
+    $_SESSION['login_error'] = "Please enter username and password.";
+    header("Location: login_form.php");
+    exit();
+}
 
 $query = "SELECT * FROM registrations WHERE LOWER(userName) = LOWER(:userName)";
 $statement = $db->prepare($query);
@@ -15,7 +21,6 @@ $row = $statement->fetch();
 $statement->closeCursor();
 
 if ($row) {
-    // Time comparison
     $now = new DateTime();
     $last_failed = $row['last_failed_login'] ? new DateTime($row['last_failed_login']) : null;
     $interval = $last_failed ? $now->getTimestamp() - $last_failed->getTimestamp() : 9999;
@@ -41,17 +46,15 @@ if ($row) {
         exit();
     }
 
-    // ✅ Check password
     if (password_verify($password, $row['password'])) {
-        // Reset failed attempts
+        // Successful login — reset failed attempts
         $query = "UPDATE registrations SET failed_attempts = 0, last_failed_login = NULL WHERE userName = :userName";
         $statement = $db->prepare($query);
         $statement->bindValue(':userName', $user_name);
         $statement->execute();
         $statement->closeCursor();
 
-        unset($_SESSION['login_error']);
-        unset($_SESSION['lockout_until']);
+        unset($_SESSION['login_error'], $_SESSION['lockout_until']);
 
         $_SESSION['isLoggedIn'] = true;
         $_SESSION['userName'] = $row['userName'];
@@ -59,7 +62,7 @@ if ($row) {
         header("Location: login_confirmation.php");
         exit();
     } else {
-        // Increment failed attempts
+        // Failed password
         $failed_attempts = $row['failed_attempts'] + 1;
         $query = "UPDATE registrations SET failed_attempts = :failed_attempts, last_failed_login = NOW() WHERE userName = :userName";
         $statement = $db->prepare($query);
@@ -83,4 +86,3 @@ if ($row) {
     header("Location: login_form.php");
     exit();
 }
-?>

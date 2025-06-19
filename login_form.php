@@ -29,6 +29,11 @@
         echo '<p style="color:red;">' . htmlspecialchars($_SESSION['login_error']) . '</p>';
         unset($_SESSION['login_error']);
     }
+
+    if (isset($_SESSION['message'])) {
+        echo '<p style="color:green;">' . htmlspecialchars($_SESSION['message']) . '</p>';
+        unset($_SESSION['message']);
+    }
     ?>
 
     <form action="login.php" method="post" id="login_form">
@@ -47,6 +52,7 @@
     </form>
 
     <p><a href="register_student_form.php">Register</a></p>
+    <p><a href="forgot_password.php">Forgot Password?</a></p>
 </main>
 
 <?php include("footer.php"); ?>
